@@ -23,8 +23,9 @@ type Fail2banListItem struct {
 	// banned in postfix
 	BannedInPostfix []string `json:"bannedInPostfix"`
 
-	// banned in postfix sasl
-	BannedInPostfixSasl []string `json:"bannedInPostfixSasl"`
+	// banned in Custom
+	BannedInCustom   []string `json:"bannedInCustom"`
+
 }
 
 // Validate validates this fail2ban list item
