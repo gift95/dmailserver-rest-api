@@ -1,5 +1,5 @@
 // API 配置
-const API_BASE = 'https://mailweb.yxliuchn.uk/api';
+const API_BASE = 'https://127.0.0.1:8080/api';
 let API_KEY =  'DNtWPAaJwWocqvKR3o8ysBdJToSQHWXW';
 
 // 显示/隐藏标签页
