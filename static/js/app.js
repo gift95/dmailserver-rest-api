@@ -1,6 +1,6 @@
 // API 配置
 const API_BASE = 'https://127.0.0.1:8080/api';
-let API_KEY =  'DNtWPAaJwWocqvKR3o8ysBdJToSQHWXW';
+let API_KEY =  '';
 
 // 显示/隐藏标签页
 function showTab(tabName) {
@@ -630,7 +630,10 @@ function showMessage(tab, text, type) {
 
 // 页面加载时检查是否已登录
 document.addEventListener('DOMContentLoaded', () => {
-    if (API_KEY) {
+    // 从localStorage获取API_KEY
+    const storedAPIKey = localStorage.getItem('api_key');
+    if (storedAPIKey) {
+        API_KEY = storedAPIKey;
         // 自动登录管理员
         document.querySelector('.container').style.display = 'none';
         document.getElementById('admin-dashboard').style.display = 'block';
