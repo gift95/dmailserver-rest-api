@@ -75,7 +75,7 @@ document.getElementById('registerForm')?.addEventListener('submit', async (e) =>
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
-                'X-API-Key': 'DNtWPAaJwWocqvKR3o8ysBdJToSQHWXW'
+                'X-API-Key': registerKey
             },
             body: JSON.stringify({
                 address: email,

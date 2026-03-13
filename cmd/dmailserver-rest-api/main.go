@@ -101,6 +101,7 @@ func main() {
 					// 准备模板数据
 						data := map[string]interface{}{
 							"MAIL_HOST": config.ServerConfig.MailHost,
+							"APIKey": config.ServerConfig.APIKey,
 						}
 					
 					// 解析并渲染模板
