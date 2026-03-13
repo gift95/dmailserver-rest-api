@@ -1,5 +1,6 @@
 ServerConfig:
-  Port: 8050
+  Port: 8080
   Host: "0.0.0.0"
-  APIKey: "abcdefuvwxyz"
-  CommandPrefix: "kubectl exec -it mailserver-6ccfc46449-p4x6w -- "
+  MailHost: yxliuchn.uk
+  APIKey: "DNtWPAaJwWocqvKR3o8ysBdJToSQHWXW"
+  CommandPrefix: "docker exec mailserver "

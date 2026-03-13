@@ -126,26 +126,28 @@ func SetupController(api *operations.DmailserverRestAPIAPI, sr repo.SetupRepo) {
 	})
 
 	api.Fail2banPostFail2banIPHandler = fail2ban.PostFail2banIPHandlerFunc(func(pfi fail2ban.PostFail2banIPParams, i interface{}) middleware.Responder {
-		has, err := sr.HasFail2banIp(pfi.Ipaddress)
-		if has {
-			slog.Info("[DELETE] /fail2ban", "error", true, "errorMessage", err, "success", false, "exists", false, "ip", pfi.Ipaddress)
-			return fail2ban.NewPostFail2banIPOK()
-		}
+    // 检查IP是否已经存在
+    has, err := sr.HasFail2banIp(pfi.Ipaddress)
+    if err != nil {
+        slog.Info("[POST] /fail2ban", "error", true, "errorMessage", err, "success", false, "ip", pfi.Ipaddress)
+        return fail2ban.NewPostFail2banIPInternalServerError()
+    }
+    
+    if has {
+        slog.Info("[POST] /fail2ban", "error", false, "success", false, "exists", true, "ip", pfi.Ipaddress)
+        return fail2ban.NewPostFail2banIPOK() // IP已经在封禁列表中，返回成功
+    }
 
-		if err != nil {
-			slog.Info("[DELETE] /fail2ban", "error", true, "errorMessage", err, "success", false, "exists", true, "ip", pfi.Ipaddress)
-			return fail2ban.NewPostFail2banIPInternalServerError()
-		}
+    // 添加封禁（使用 AddFail2ban，不是 RemoveFail2ban）
+    err = sr.AddFail2ban(pfi.Ipaddress)
+    if err != nil {
+        slog.Info("[POST] /fail2ban", "error", true, "errorMessage", err, "success", false, "ip", pfi.Ipaddress)
+        return fail2ban.NewPostFail2banIPInternalServerError()
+    }
 
-		err = sr.RemoveFail2ban(pfi.Ipaddress)
-		if err != nil {
-			slog.Info("[DELETE] /fail2ban", "error", true, "errorMessage", err, "success", false, "exists", true, "ip", pfi.Ipaddress)
-			return fail2ban.NewPostFail2banIPInternalServerError()
-		}
-
-		slog.Info("[DELETE] /fail2ban", "error", false, "success", true, "exists", true, "ip", pfi.Ipaddress)
-		return fail2ban.NewPostFail2banIPOK()
-	})
+    slog.Info("[POST] /fail2ban", "error", false, "success", true, "ip", pfi.Ipaddress)
+    return fail2ban.NewPostFail2banIPOK()
+})
 
 	api.EmailAddEmailAliasHandler = email.AddEmailAliasHandlerFunc(func(aeap email.AddEmailAliasParams, i interface{}) middleware.Responder {
 		err := sr.AddAlias(aeap.Alias, aeap.EmailAddress)
