@@ -1,5 +1,5 @@
 // API 配置
-const API_BASE = 'https://127.0.0.1:8080/api';
+const API_BASE = '';
 let API_KEY =  '';
 
 // 显示/隐藏标签页
