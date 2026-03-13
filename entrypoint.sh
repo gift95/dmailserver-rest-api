@@ -4,15 +4,19 @@ set -e
 echo "Starting dmail-server-rest-api..."
 
 # 复制静态文件
-if [ ! -d "/app/static" ]; then
+if [ ! -d "/app/static" ] || [ -z "$(ls -A /app/static 2>/dev/null)" ]; then
     mkdir -p /app/static
-    cp -r /app/backup/static/* /app/static/ 2>/dev/null || true
+    if [ -d "/app/backup/static" ] && [ -n "$(ls -A /app/backup/static 2>/dev/null)" ]; then
+        cp -r /app/backup/static/* /app/static/
+    fi
 fi
 
 # 复制配置文件
-if [ ! -d "/app/config" ]; then
+if [ ! -d "/app/config" ] || [ -z "$(ls -A /app/config 2>/dev/null)" ]; then
     mkdir -p /app/config
-    cp -r /app/backup/config/* /app/config/ 2>/dev/null || true
+    if [ -d "/app/backup/config" ] && [ -n "$(ls -A /app/backup/config 2>/dev/null)" ]; then
+        cp -r /app/backup/config/* /app/config/
+    fi
 fi
 
 # 创建默认配置文件
