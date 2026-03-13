@@ -1,5 +1,6 @@
 ServerConfig:
   Port: 8080
   Host: "0.0.0.0"
+  MailHost: yxliuchn.uk
   APIKey: "DNtWPAaJwWocqvKR3o8ysBdJToSQHWXW"
   CommandPrefix: "docker exec mailserver "

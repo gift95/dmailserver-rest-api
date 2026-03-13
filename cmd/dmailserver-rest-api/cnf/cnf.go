@@ -10,6 +10,7 @@ type ServerConfig struct {
 	Host          string
 	APIKey        string
 	CommandPrefix string
+	MAIL_HOST     string
 }
 
 type Config struct {

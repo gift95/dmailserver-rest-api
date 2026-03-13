@@ -2,11 +2,14 @@ package main
 
 import (
 	"errors"
+	"fmt"
 	"log"
 	"log/slog"
 	"os"
-	"strings" 
+	"strings"
+	"html/template"
 	"net/http"
+	"path/filepath"
 	"github.com/go-openapi/loads"
 	flags "github.com/jessevdk/go-flags"
 
@@ -85,6 +88,42 @@ func main() {
 	server.SetHandler(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		// 尝试提供静态文件
 		if r.URL.Path != "/api" && !strings.HasPrefix(r.URL.Path, "/api/") {
+			// 检查是否是HTML文件
+			if strings.HasSuffix(r.URL.Path, ".html") || r.URL.Path == "/" {
+				// 构建文件路径
+				filePath := "./static"
+				if r.URL.Path != "/" {
+					filePath += r.URL.Path
+				} else {
+					filePath += "/index.html"
+				}
+				
+				// 检查文件是否存在
+				if _, err := os.Stat(filePath); err == nil {
+					// 准备模板数据
+					data := map[string]interface{}{
+						"MAIL_HOST": config.ServerConfig.MailHost,
+					}
+					
+					// 解析并渲染模板
+					tmpl, err := template.ParseFiles(filePath)
+					if err != nil {
+						// 渲染失败，直接提供文件
+						staticHandler := http.FileServer(http.Dir("./static"))
+						staticHandler.ServeHTTP(w, r)
+						return
+					}
+					err = tmpl.Execute(w, data)
+					if err != nil {
+						// 渲染失败，直接提供文件
+						staticHandler := http.FileServer(http.Dir("./static"))
+						staticHandler.ServeHTTP(w, r)
+						return
+					}
+					return
+				}
+			}
+			// 其他静态文件直接提供
 			staticHandler := http.FileServer(http.Dir("./static"))
 			staticHandler.ServeHTTP(w, r)
 			return

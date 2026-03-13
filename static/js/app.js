@@ -55,8 +55,8 @@ document.getElementById('registerForm')?.addEventListener('submit', async (e) =>
     const confirm = document.getElementById('register-confirm').value;
     
     // 验证邮箱域名
-    if (!email.endsWith('@yxliuchn.uk')) {
-        showMessage('register', '只能注册 @yxliuchn.uk 域名的邮箱', 'error');
+    if (!email.endsWith(`@${MAIL_HOST}`)) {
+        showMessage('register', `只能注册 @${MAIL_HOST} 域名的邮箱`, 'error');
         return;
     }
     
