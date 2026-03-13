@@ -1,5 +1,5 @@
 // API 配置
-const API_BASE = '';
+const API_BASE = '/api';
 let API_KEY =  '';
 
 // 显示/隐藏标签页
