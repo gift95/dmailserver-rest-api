@@ -2,14 +2,12 @@ package main
 
 import (
 	"errors"
-	"fmt"
 	"log"
 	"log/slog"
 	"os"
 	"strings"
 	"html/template"
 	"net/http"
-	"path/filepath"
 	"github.com/go-openapi/loads"
 	flags "github.com/jessevdk/go-flags"
 
@@ -101,9 +99,9 @@ func main() {
 				// 检查文件是否存在
 				if _, err := os.Stat(filePath); err == nil {
 					// 准备模板数据
-					data := map[string]interface{}{
-						"MAIL_HOST": config.ServerConfig.MailHost,
-					}
+						data := map[string]interface{}{
+							"MAIL_HOST": config.ServerConfig.MailHost,
+						}
 					
 					// 解析并渲染模板
 					tmpl, err := template.ParseFiles(filePath)
